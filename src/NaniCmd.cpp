@@ -31,6 +31,24 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "BeginIf",
+        {
+            "if",
+            {
+                {ArgType::String, "Expression"},
+            },
+        },
+    },
+    {
+        "ElseIf",
+        {
+            "elseIf",
+            {
+                {ArgType::String, "Expression"},
+            },
+        },
+    },
+    {
         "ModifyTextPrinter",
         {
             "printer",
@@ -38,6 +56,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::Kvp, "IdAndAppearance"},
                 {ArgType::Bool, "MakeDefault", "default"},
                 {ArgType::Bool, "HideOther", "hideOther"},
+                {ArgType::Float, "Duration", "time"},
             },
         },
     },
@@ -49,8 +68,11 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::Bool, "Wait", "wait"},
                 {ArgType::FloatList, "Scale", "scale"},
                 {ArgType::Float, "Duration", "time"},
+                {ArgType::String, "TintColor", "tint"},
                 {ArgType::FloatList, "ScenePosition", "pos"},
                 {ArgType::FloatList, "Position", "position"},
+                {ArgType::String, "LookDirection", "look"},
+                {ArgType::String, "EasingTypeName", "easing"},
                 {ArgType::Kvp, "IdAndAppearance"},
             },
         },
@@ -63,8 +85,23 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::Bool, "Wait", "wait"},
                 {ArgType::FloatList, "Scale", "scale"},
                 {ArgType::Float, "Duration", "time"},
+                {ArgType::String, "TintColor", "tint"},
                 {ArgType::FloatList, "ScenePosition", "pos"},
+                {ArgType::String, "EasingTypeName", "easing"},
                 {ArgType::Kvp, "AppearanceAndTransition"},
+            },
+        },
+    },
+    {
+        "FakeBackLog",
+        {"fakeBackLog"},
+    },
+    {
+        "Achievement",
+        {
+            "Achievement",
+            {
+                {ArgType::Int, "ID"},
             },
         },
     },
@@ -94,6 +131,24 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "CustomSave",
+        {"customSave"},
+    },
+    {
+        "StartQTE",
+        {
+            "startQTE",
+            {
+                {ArgType::Int, "MaxCount", "maxCount"},
+                {ArgType::Float, "ShowTime", "showTime"},
+                {ArgType::Float, "RemainingTime", "remainingTime"},
+                {ArgType::Float, "MissingTime", "missingTime"},
+                {ArgType::FloatList, "Interval", "interval"},
+                {ArgType::FloatList, "Scale", "scale"},
+            },
+        },
+    },
+    {
         "HideActors",
         {
             "hide",
@@ -117,6 +172,17 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "HideAllCharacters",
+        {
+            "hideChars",
+            {
+                {ArgType::Float, "Duration", "time"},
+                {ArgType::Bool, "Remove", "lazy"},
+                {ArgType::Bool, "Wait", "wait"},
+            },
+        },
+    },
+    {
         "WaitForInput",
         {"wait i", {{ArgType::Int, ""}}},
     },
@@ -126,6 +192,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
             "camera",
             {{ArgType::FloatList, "Offset", "offset"},
              {ArgType::FloatList, "Rotation", "rotation"},
+             {ArgType::Float, "Roll", "roll"},
              {ArgType::Float, "Zoom", "zoom"},
              {ArgType::Float, "Duration", "duration"},
              {ArgType::Bool, "Wait", "wait"},
@@ -152,6 +219,9 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::String, "AuthorId", "author"},
                 {ArgType::Float, "RevealSpeed", "speed"},
                 {ArgType::Bool, "WaitForInput", "waitInput"},
+                {ArgType::Int, "LineBreaks", "br"},
+                {ArgType::Bool, "ResetPrinter", "reset"},
+                {ArgType::Float, "ChangeVisibilityDuration", "fadeTime"},
             },
         },
     },
@@ -165,6 +235,24 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "AppendLineBreak",
+        {
+            "br",
+            {
+                {ArgType::Int, "Count"},
+            },
+        },
+    },
+    {
+        "ProcessInput",
+        {
+            "processInput",
+            {
+                {ArgType::Bool, "InputEnabled"},
+            },
+        },
+    },
+    {
         "AddChoice",
         {
             "choice",
@@ -173,6 +261,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::Kvp, "GotoPath", "goto"},
                 {ArgType::Bool, "AutoPlay", "play"},
                 {ArgType::Bool, "ShowHandler", "show"},
+                {ArgType::String, "ConditionalExpression", "if"},
             },
 
         },
@@ -182,6 +271,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         {
             "sfx",
             {
+                {ArgType::Bool, "Wait", "wait"},
                 {ArgType::String, "SfxPath"},
                 {ArgType::Float, "Volume", "volume"},
                 {ArgType::Bool, "Loop", "loop"},
@@ -212,6 +302,10 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::Float, "FadeOutDuration", "fade"},
             },
         },
+    },
+    {
+        "StopVoice",
+        {"stopVoice"},
     },
     {
         "Spawn",
@@ -249,6 +343,16 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         "Goto",
         {
             "goto",
+            {
+                {ArgType::Kvp, "Path"},
+                {ArgType::String, "ConditionalExpression", "if"},
+            },
+        },
+    },
+    {
+        "Gosub",
+        {
+            "gosub",
             {
                 {ArgType::Kvp, "Path"},
             },
