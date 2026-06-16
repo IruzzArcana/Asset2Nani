@@ -27,7 +27,7 @@ std::string NaniCmd::Dispatch(const std::string &type, const ParseContext &ctx)
 
     if (it == s_handler.end())
         // throw std::runtime_error(std::format("Unknown line type: {}", type));
-        return "@ " + type + " ; TODO";
+        return type + " !!TODO!!";
 
     return it->second(ctx);
 }
@@ -49,7 +49,7 @@ std::string NaniCmd::ParseCommandScriptLine(const ParseContext &ctx)
     for (auto &ref : ctx.refId)
     {
         if (ref["rid"] == rid)
-            return Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx});
+            return std::format("{}{}", !ctx.is_inline ? "@" : "", Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx, true}));
     }
     throw std::runtime_error("rid not found");
 }
@@ -59,7 +59,6 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
     std::string result;
     const auto &inlined = ctx.refId[ctx.idx]["data"]["inlinedCommands"]["Array"];
 
-    bool first = true;
     for (const auto &cmdRef : inlined)
     {
         int rid = cmdRef["rid"];
@@ -70,7 +69,7 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
                 if (ref["type"]["class"].get<std::string>() == "PrintText")
                     result += ParsePrintText2({ref, ctx.textMap, ctx.idx});
                 else
-                    result += std::format("[{}]", Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx}));
+                    result += std::format("[{}]", Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx, true}));
                 break;
             }
         }
@@ -87,12 +86,12 @@ std::string NaniCmd::ParseEmptyScriptLine(const ParseContext &ctx)
 
 std::string NaniCmd::ParseSetControlPanelState(const ParseContext &ctx)
 {
-    return std::format("@SetControlPanelState history:{} setting:{}", ctx.refId["data"]["history"]["value"].get<int>(), ctx.refId["data"]["setting"]["value"].get<int>());
+    return std::format("SetControlPanelState history:{} setting:{}", ctx.refId["data"]["history"]["value"].get<int>(), ctx.refId["data"]["setting"]["value"].get<int>());
 }
 
 std::string NaniCmd::ParseModifyTextPrinter(const ParseContext &ctx)
 {
-    std::string cmd = "@printer";
+    std::string cmd = "printer";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -124,7 +123,7 @@ std::string NaniCmd::ParseModifyTextPrinter(const ParseContext &ctx)
 
 std::string NaniCmd::ParsePlayBgm(const ParseContext &ctx)
 {
-    std::string cmd = "@bgm";
+    std::string cmd = "bgm";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -164,7 +163,7 @@ std::string NaniCmd::ParsePlayBgm(const ParseContext &ctx)
 
 std::string NaniCmd::ParsePrintText(const ParseContext &ctx)
 {
-    std::string cmd = "@print";
+    std::string cmd = "print";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -218,12 +217,12 @@ std::string NaniCmd::ParsePrintText2(const ParseContext &ctx)
 
 std::string NaniCmd::ParseResetText(const ParseContext &ctx)
 {
-    return "@resetText";
+    return "resetText";
 }
 
 std::string NaniCmd::ParseStopBgm(const ParseContext &ctx)
 {
-    std::string cmd = "@stopBgm";
+    std::string cmd = "stopBgm";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -253,7 +252,7 @@ std::string NaniCmd::ParseStopBgm(const ParseContext &ctx)
 
 std::string NaniCmd::ParseGoto(const ParseContext &ctx)
 {
-    std::string cmd = "@goto";
+    std::string cmd = "goto";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -275,7 +274,7 @@ std::string NaniCmd::ParseGoto(const ParseContext &ctx)
 
 std::string NaniCmd::ParseModifyCamera(const ParseContext &ctx)
 {
-    std::string cmd = "@camera";
+    std::string cmd = "camera";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -317,7 +316,7 @@ std::string NaniCmd::ParseModifyCamera(const ParseContext &ctx)
 
 std::string NaniCmd::ParseWait(const ParseContext &ctx)
 {
-    std::string cmd = "@wait";
+    std::string cmd = "wait";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
@@ -335,12 +334,12 @@ std::string NaniCmd::ParseWait(const ParseContext &ctx)
 
 std::string NaniCmd::ParseWaitForInput(const ParseContext &ctx)
 {
-    return "@wait i";
+    return "wait i";
 }
 
 std::string NaniCmd::ParseHideAllActors(const ParseContext &ctx)
 {
-    std::string cmd = "@hideAll";
+    std::string cmd = "hideAll";
     auto &data = ctx.refId["data"];
 
     for (auto &[key, entry] : data.items())
