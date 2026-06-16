@@ -8,18 +8,266 @@ const std::map<std::string, LineHandler> NaniCmd::s_handler = {
     {"GenericTextScriptLine", NaniCmd::ParseGenericTextScript},
     {"EmptyScriptLine", NaniCmd::ParseEmptyScriptLine},
     {"CommentScriptLine", NaniCmd::ParseCommentScriptLine},
+};
 
-    {"SetControlPanelState", NaniCmd::ParseSetControlPanelState},
-    {"ModifyTextPrinter", NaniCmd::ParseModifyTextPrinter},
-    {"HideAllActors", NaniCmd::ParseHideAllActors},
-    {"WaitForInput", NaniCmd::ParseWaitForInput},
-    {"ModifyCamera", NaniCmd::ParseModifyCamera},
-    {"PrintText", NaniCmd::ParsePrintText},
-    {"ResetText", NaniCmd::ParseResetText},
-    {"PlayBgm", NaniCmd::ParsePlayBgm},
-    {"StopBgm", NaniCmd::ParseStopBgm},
-    {"Goto", NaniCmd::ParseGoto},
-    {"Wait", NaniCmd::ParseWait}};
+const std::map<std::string, Command> NaniCmd::m_cmds = {
+    {
+        "SetControlPanelState",
+        {
+            "SetControlPanelState",
+            {
+                {ArgType::Int, "history", "history"},
+                {ArgType::Int, "setting", "setting"},
+            },
+        },
+    },
+    {
+        "SetCustomVariable",
+        {
+            "set",
+            {
+                {ArgType::String, "Expression"},
+            },
+        },
+    },
+    {
+        "ModifyTextPrinter",
+        {
+            "printer",
+            {
+                {ArgType::Kvp, "IdAndAppearance"},
+                {ArgType::Bool, "MakeDefault", "default"},
+                {ArgType::Bool, "HideOther", "hideOther"},
+            },
+        },
+    },
+    {
+        "ModifyCharacter",
+        {
+            "char",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::FloatList, "Scale", "scale"},
+                {ArgType::Float, "Duration", "time"},
+                {ArgType::FloatList, "ScenePosition", "pos"},
+                {ArgType::FloatList, "Position", "position"},
+                {ArgType::Kvp, "IdAndAppearance"},
+            },
+        },
+    },
+    {
+        "ModifyBackground",
+        {
+            "back",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::FloatList, "Scale", "scale"},
+                {ArgType::Float, "Duration", "time"},
+                {ArgType::FloatList, "ScenePosition", "pos"},
+                {ArgType::Kvp, "AppearanceAndTransition"},
+            },
+        },
+    },
+    {
+        "CustomFlashOnce",
+        {
+            "flashOnce",
+            {
+                {ArgType::Float, "startValue", "startValue"},
+                {ArgType::Float, "endValue", "endValue"},
+                {ArgType::Float, "duration", "duration"},
+                {ArgType::Bool, "Wait", "wait"},
+
+            },
+        },
+    },
+    {
+        "CustomExposure",
+        {
+            "customExposure",
+            {
+                {ArgType::Float, "startValue", "startValue"},
+                {ArgType::Float, "endValue", "endValue"},
+                {ArgType::Float, "duration", "duration"},
+                {ArgType::Bool, "Wait", "wait"},
+            },
+        },
+    },
+    {
+        "HideActors",
+        {
+            "hide",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::StringList, "ActorIds"},
+                {ArgType::Float, "Duration", "time"},
+                {ArgType::Bool, "Remove", "lazy"},
+            },
+        },
+    },
+    {
+        "HideAllActors",
+        {
+            "hideAll",
+            {
+                {ArgType::Float, "Duration", "time"},
+                {ArgType::Bool, "Remove", "lazy"},
+                {ArgType::Bool, "Wait", "wait"},
+            },
+        },
+    },
+    {
+        "WaitForInput",
+        {"wait i", {{ArgType::Int, ""}}},
+    },
+    {
+        "ModifyCamera",
+        {
+            "camera",
+            {{ArgType::FloatList, "Offset", "offset"},
+             {ArgType::FloatList, "Rotation", "rotation"},
+             {ArgType::Float, "Zoom", "zoom"},
+             {ArgType::Float, "Duration", "duration"},
+             {ArgType::Bool, "Wait", "wait"},
+             {ArgType::String, "EasingTypeName", "easing"}},
+        },
+    },
+    {
+        "HidePrinter",
+        {
+            "hidePrinter",
+            {
+                {ArgType::Float, "Duration", "time"},
+                {ArgType::Bool, "Wait", "wait"},
+            },
+        },
+    },
+    {
+        "PrintText",
+        {
+            "print",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::Text, "Text", ""},
+                {ArgType::String, "AuthorId", "author"},
+                {ArgType::Float, "RevealSpeed", "speed"},
+                {ArgType::Bool, "WaitForInput", "waitInput"},
+            },
+        },
+    },
+    {
+        "ResetText",
+        {
+            "resetText",
+            {
+                {ArgType::Int, "ResetAuthor"},
+            },
+        },
+    },
+    {
+        "AddChoice",
+        {
+            "choice",
+            {
+                {ArgType::Text, "ChoiceSummary"},
+                {ArgType::Kvp, "GotoPath", "goto"},
+                {ArgType::Bool, "AutoPlay", "play"},
+                {ArgType::Bool, "ShowHandler", "show"},
+            },
+
+        },
+    },
+    {
+        "PlaySfx",
+        {
+            "sfx",
+            {
+                {ArgType::String, "SfxPath"},
+                {ArgType::Float, "Volume", "volume"},
+                {ArgType::Bool, "Loop", "loop"},
+                {ArgType::Float, "FadeInDuration", "fade"},
+            },
+        },
+    },
+    {
+        "PlayBgm",
+        {
+            "bgm",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "BgmPath"},
+                {ArgType::Float, "Volume", "volume"},
+                {ArgType::Bool, "Loop", "loop"},
+                {ArgType::Float, "FadeInDuration", "fade"},
+            },
+        },
+    },
+    {
+        "StopBgm",
+        {
+            "stopBgm",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "BgmPath"},
+                {ArgType::Float, "FadeOutDuration", "fade"},
+            },
+        },
+    },
+    {
+        "Spawn",
+        {
+            "spawn",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "Path"},
+                {ArgType::StringList, "Params", "params"},
+            },
+        },
+    },
+    {
+        "SpawnShake",
+        {
+            "shake",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "ActorId"},
+                {ArgType::Int, "ShakeCount", "count"},
+                {ArgType::Float, "ShakeDuration", "time"},
+            },
+        },
+    },
+    {
+        "Unlock",
+        {
+            "unlock",
+            {
+                {ArgType::String, "Id"},
+            },
+        },
+    },
+    {
+        "Goto",
+        {
+            "goto",
+            {
+                {ArgType::Kvp, "Path"},
+            },
+        },
+    },
+    {
+        "Wait",
+        {
+            "wait",
+            {
+                {ArgType::String, "WaitMode"},
+            },
+        },
+    },
+    {
+        "Stop",
+        {"stop"},
+    },
+};
 
 std::string NaniCmd::Dispatch(const std::string &type, const ParseContext &ctx)
 {
@@ -30,6 +278,114 @@ std::string NaniCmd::Dispatch(const std::string &type, const ParseContext &ctx)
         return type + " !!TODO!!";
 
     return it->second(ctx);
+}
+
+std::string NaniCmd::ParseCmd(const ParseContext &ctx)
+{
+    std::string type = ctx.refId["type"]["class"].get<std::string>();
+
+    auto it = m_cmds.find(type);
+    if (it == m_cmds.end())
+        return type + " !!TODO!!";
+
+    const Command &cmdDef = it->second;
+    std::string cmd = cmdDef.name;
+    /*
+        if (cmdDef.args.size() == 0)
+            return cmd;
+    */
+    const auto &data = ctx.refId["data"];
+
+    for (auto &[key, entry] : data.items())
+    {
+        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
+            continue;
+
+        bool found = false;
+        for (const auto &arg : cmdDef.args)
+        {
+            if (key != arg.entryname)
+                continue;
+
+            found = true;
+
+            cmd += " ";
+
+            if (!arg.cmdname.empty())
+            {
+                cmd += arg.cmdname + ":";
+            }
+
+            switch (arg.type)
+            {
+            case ArgType::Int:
+                cmd += std::to_string(entry["value"].get<int>());
+                break;
+
+            case ArgType::Bool:
+                cmd += entry["value"].get<int>() ? "true" : "false";
+                break;
+
+            case ArgType::String:
+                cmd += entry["value"].get<std::string>();
+                break;
+
+            case ArgType::StringList:
+            {
+                const auto &params = entry["value"]["Array"];
+                for (size_t i = 0; i < params.size(); ++i)
+                {
+                    if (i > 0)
+                        cmd += ",";
+                    cmd += params[i]["value"].get<std::string>();
+                }
+                break;
+            }
+
+            case ArgType::Float:
+                cmd += std::format("{:g}", entry["value"].get<float>());
+                break;
+
+            case ArgType::FloatList:
+            {
+                const auto &coords = entry["value"]["Array"];
+                for (size_t i = 0; i < coords.size(); ++i)
+                {
+                    if (coords[i]["hasValue"].get<int>() == 0)
+                        continue;
+
+                    if (i > 0)
+                        cmd += ",";
+                    cmd += std::format("{:g}", coords[i]["value"].get<float>());
+                }
+                break;
+            }
+
+            case ArgType::Kvp:
+            {
+                std::string name = entry["value"]["name"]["value"].get<std::string>();
+                std::string val = entry["value"]["value"]["value"].get<std::string>();
+                cmd += val.empty() ? name : name + "." + val;
+                break;
+            }
+            case ArgType::Text:
+            {
+                if (entry["value"]["parts"]["Array"].size() > 1)
+                    std::cout << "[WARN] Text>Value>Parts>Array returned more than one" << std::endl;
+
+                std::string tkey = entry["value"]["parts"]["Array"][0]["id"].get<std::string>();
+                cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
+            }
+            }
+            break;
+        }
+        if (!found)
+        {
+            cmd += std::format(" UNKNOWN_ARGUMENT_{} ", key);
+        }
+    }
+
+    return cmd;
 }
 
 std::string NaniCmd::ParseLabelScript(const ParseContext &ctx)
@@ -49,14 +405,17 @@ std::string NaniCmd::ParseCommandScriptLine(const ParseContext &ctx)
     for (auto &ref : ctx.refId)
     {
         if (ref["rid"] == rid)
-            return std::format("{}{}", !ctx.is_inline ? "@" : "", Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx, true}));
+            return std::format("{}{}", !ctx.is_inline ? "@" : "", ParseCmd(ParseContext{ref, ctx.textMap, ctx.idx, true}));
     }
     throw std::runtime_error("rid not found");
 }
 
 std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
 {
-    std::string result;
+    std::string authorPrefix;
+    std::string body;
+    bool authorExtracted = false;
+
     const auto &inlined = ctx.refId[ctx.idx]["data"]["inlinedCommands"]["Array"];
 
     for (const auto &cmdRef : inlined)
@@ -64,19 +423,32 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
         int rid = cmdRef["rid"];
         for (const auto &ref : ctx.refId)
         {
-            if (ref["rid"] == rid)
+            if (ref["rid"] != rid)
+                continue;
+
+            if (ref["type"]["class"].get<std::string>() == "PrintText")
             {
-                if (ref["type"]["class"].get<std::string>() == "PrintText")
-                    result += ParsePrintText2({ref, ctx.textMap, ctx.idx});
-                else
-                    result += std::format("[{}]", Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx, true}));
-                break;
+                auto &data = ref["data"];
+                if (!authorExtracted &&
+                    data.contains("AuthorId") &&
+                    data["AuthorId"].contains("hasValue") &&
+                    data["AuthorId"]["hasValue"].get<int>() == 1)
+                {
+                    authorPrefix = std::format("{}: ", data["AuthorId"]["value"].get<std::string>());
+                    authorExtracted = true;
+                }
+                std::string tkey = data["Text"]["value"]["parts"]["Array"][0]["id"].get<std::string>();
+                body += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
             }
+            else
+            {
+                body += std::format("[{}]", ParseCmd(ParseContext{ref, ctx.textMap, ctx.idx, true}));
+            }
+            break;
         }
-        result += " ";
     }
 
-    return result;
+    return authorPrefix + body;
 }
 
 std::string NaniCmd::ParseEmptyScriptLine(const ParseContext &ctx)
@@ -84,124 +456,7 @@ std::string NaniCmd::ParseEmptyScriptLine(const ParseContext &ctx)
     return "";
 }
 
-std::string NaniCmd::ParseSetControlPanelState(const ParseContext &ctx)
-{
-    return std::format("SetControlPanelState history:{} setting:{}", ctx.refId["data"]["history"]["value"].get<int>(), ctx.refId["data"]["setting"]["value"].get<int>());
-}
-
-std::string NaniCmd::ParseModifyTextPrinter(const ParseContext &ctx)
-{
-    std::string cmd = "printer";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "IdAndAppearance")
-        {
-            std::string name = entry["value"]["name"]["value"].get<std::string>();
-            std::string val = entry["value"]["value"]["value"].get<std::string>();
-            cmd += val.empty() ? name : name + "." + val;
-        }
-        else if (key == "MakeDefault")
-        {
-            cmd += "default:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-        else if (key == "HideOther")
-        {
-            cmd += "hideOther:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-    }
-    return cmd;
-}
-
-std::string NaniCmd::ParsePlayBgm(const ParseContext &ctx)
-{
-    std::string cmd = "bgm";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "Wait")
-        {
-            cmd += "wait:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-        else if (key == "BgmPath")
-        {
-            cmd += entry["value"].get<std::string>();
-        }
-        else if (key == "Volume")
-        {
-            cmd += "volume:";
-            cmd += std::format("{:g}", entry["value"].get<float>());
-        }
-        else if (key == "Loop")
-        {
-            cmd += "loop:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-        else if (key == "FadeInDuration")
-        {
-            cmd += "fade:";
-            cmd += std::format("{:g}", entry["value"].get<float>());
-        }
-    }
-    return cmd;
-}
-
 std::string NaniCmd::ParsePrintText(const ParseContext &ctx)
-{
-    std::string cmd = "print";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "Wait")
-        {
-            cmd += "wait:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-        else if (key == "Text")
-        {
-            std::string tkey = entry["value"]["parts"]["Array"][0]["id"].get<std::string>();
-            cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
-        }
-        else if (key == "AuthorId")
-        {
-            cmd += std::format("author:{}", entry["value"].get<std::string>());
-        }
-        else if (key == "RevealSpeed")
-        {
-            cmd += "speed:";
-            cmd += std::format("{:g}", entry["value"].get<float>());
-        }
-        else if (key == "WaitForInput")
-        {
-            cmd += "waitInput:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-    }
-    return cmd;
-}
-
-std::string NaniCmd::ParsePrintText2(const ParseContext &ctx)
 {
     std::string cmd = "";
     auto &data = ctx.refId["data"];
@@ -212,148 +467,5 @@ std::string NaniCmd::ParsePrintText2(const ParseContext &ctx)
     std::string tkey = data["Text"]["value"]["parts"]["Array"][0]["id"].get<std::string>();
     cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
 
-    return cmd;
-}
-
-std::string NaniCmd::ParseResetText(const ParseContext &ctx)
-{
-    return "resetText";
-}
-
-std::string NaniCmd::ParseStopBgm(const ParseContext &ctx)
-{
-    std::string cmd = "stopBgm";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "Wait")
-        {
-            cmd += "wait:";
-            cmd += entry["value"].get<int>() ? "true" : "false";
-        }
-        else if (key == "BgmPath")
-        {
-            cmd += entry["value"].get<std::string>();
-        }
-        else if (key == "FadeOutDuration")
-        {
-            cmd += "fade:";
-            cmd += std::format("{:g}", entry["value"].get<float>());
-        }
-    }
-    return cmd;
-}
-
-std::string NaniCmd::ParseGoto(const ParseContext &ctx)
-{
-    std::string cmd = "goto";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "Path")
-        {
-            std::string name = entry["value"]["name"]["value"].get<std::string>();
-            std::string val = entry["value"]["value"]["value"].get<std::string>();
-            cmd += val.empty() ? name : name + "." + val;
-        }
-    }
-    return cmd;
-}
-
-std::string NaniCmd::ParseModifyCamera(const ParseContext &ctx)
-{
-    std::string cmd = "camera";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "Offset")
-        {
-            cmd += "offset:";
-            auto &coords = entry["value"]["Array"];
-            for (size_t i = 0; i < coords.size(); ++i)
-            {
-                if (i > 0)
-                    cmd += ",";
-                cmd += std::format("{:g}", coords[i]["value"].get<float>());
-            }
-        }
-        else if (key == "Rotation")
-        {
-            cmd += "rotation:";
-            auto &coords = entry["value"]["Array"];
-            for (size_t i = 0; i < coords.size(); ++i)
-            {
-                if (i > 0)
-                    cmd += ",";
-                cmd += std::format("{:g}", coords[i]["value"].get<float>());
-            }
-        }
-        else if (key == "Zoom")
-            cmd += std::format("zoom:{:g}", entry["value"].get<float>());
-        else if (key == "Duration")
-            cmd += std::format("duration:{:g}", entry["value"].get<float>());
-    }
-    return cmd;
-}
-
-std::string NaniCmd::ParseWait(const ParseContext &ctx)
-{
-    std::string cmd = "wait";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "WaitMode")
-            cmd += " " + entry["value"].get<std::string>();
-    }
-    return cmd;
-}
-
-std::string NaniCmd::ParseWaitForInput(const ParseContext &ctx)
-{
-    return "wait i";
-}
-
-std::string NaniCmd::ParseHideAllActors(const ParseContext &ctx)
-{
-    std::string cmd = "hideAll";
-    auto &data = ctx.refId["data"];
-
-    for (auto &[key, entry] : data.items())
-    {
-        if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
-            continue;
-
-        cmd += " ";
-
-        if (key == "Duration")
-            cmd += std::format("time:{:g}", entry["value"].get<float>());
-
-        else if (key == "Remove")
-            cmd += std::format("lazy:{}", entry["value"].get<int>() ? "true" : "false");
-    }
     return cmd;
 }
