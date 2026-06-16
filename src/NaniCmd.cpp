@@ -335,6 +335,9 @@ std::string NaniCmd::ParseCmd(const ParseContext &ctx)
                 const auto &params = entry["value"]["Array"];
                 for (size_t i = 0; i < params.size(); ++i)
                 {
+                    if (params[i]["hasValue"].get<int>() == 0)
+                        continue;
+
                     if (i > 0)
                         cmd += ",";
                     cmd += params[i]["value"].get<std::string>();
