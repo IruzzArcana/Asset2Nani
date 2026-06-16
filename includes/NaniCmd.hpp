@@ -30,6 +30,7 @@ private:
     static std::string ParseWaitForInput(const ParseContext &ctx);
     static std::string ParseModifyCamera(const ParseContext &ctx);
     static std::string ParsePrintText(const ParseContext &ctx);
+    static std::string ParsePrintText2(const ParseContext &ctx);
     static std::string ParseResetText(const ParseContext &ctx);
     static std::string ParsePlayBgm(const ParseContext &ctx);
     static std::string ParseStopBgm(const ParseContext &ctx);

@@ -67,15 +67,10 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
         {
             if (ref["rid"] == rid)
             {
-                if (!first)
-                    result += "[";
-
-                result += Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx});
-                if (!first)
-                    result += "]";
-
-                if (first)
-                    first = false;
+                if (ref["type"]["class"].get<std::string>() == "PrintText")
+                    result += ParsePrintText2({ref, ctx.textMap, ctx.idx});
+                else
+                    result += std::format("[{}]", Dispatch(ref["type"]["class"].get<std::string>(), ParseContext{ref, ctx.textMap, ctx.idx}));
                 break;
             }
         }
@@ -207,6 +202,20 @@ std::string NaniCmd::ParsePrintText(const ParseContext &ctx)
     return cmd;
 }
 
+std::string NaniCmd::ParsePrintText2(const ParseContext &ctx)
+{
+    std::string cmd = "";
+    auto &data = ctx.refId["data"];
+
+    if (data.contains("AuthorId") && data["AuthorId"].contains("hasValue") && data["AuthorId"]["hasValue"].get<int>() == 1)
+        cmd += std::format("{}: ", data["AuthorId"]["value"].get<std::string>());
+
+    std::string tkey = data["Text"]["value"]["parts"]["Array"][0]["id"].get<std::string>();
+    cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
+
+    return cmd;
+}
+
 std::string NaniCmd::ParseResetText(const ParseContext &ctx)
 {
     return "@resetText";
@@ -315,12 +324,11 @@ std::string NaniCmd::ParseWait(const ParseContext &ctx)
     {
         if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
             continue;
-        
+
         cmd += " ";
 
         if (key == "WaitMode")
             cmd += " " + entry["value"].get<std::string>();
-
     }
     return cmd;
 }
@@ -345,7 +353,7 @@ std::string NaniCmd::ParseHideAllActors(const ParseContext &ctx)
         if (key == "Duration")
             cmd += std::format("time:{:g}", entry["value"].get<float>());
 
-        if (key == "Remove")
+        else if (key == "Remove")
             cmd += std::format("lazy:{}", entry["value"].get<int>() ? "true" : "false");
     }
     return cmd;
