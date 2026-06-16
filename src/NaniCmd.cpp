@@ -187,13 +187,11 @@ std::string NaniCmd::ParsePrintText(const ParseContext &ctx)
         else if (key == "Text")
         {
             std::string tkey = entry["value"]["parts"]["Array"][0]["id"].get<std::string>();
-            cmd += "\"" + ctx.textMap.at(tkey) + "\"";
+            cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
         }
         else if (key == "AuthorId")
         {
-            cmd += "author:* as: \"";
-            cmd += entry["value"].get<std::string>();
-            cmd += "\"";
+            cmd += std::format("author:{}", entry["value"].get<std::string>());
         }
         else if (key == "RevealSpeed")
         {
