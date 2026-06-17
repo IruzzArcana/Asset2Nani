@@ -8,7 +8,7 @@
 Nani::Nani(std::string path) : m_path(path)
 {
     if (!LoadJson())
-        throw std::runtime_error("Faile to load JSON");
+        throw std::runtime_error("Failed to load JSON");
 }
 
 bool Nani::LoadJson()
@@ -16,46 +16,33 @@ bool Nani::LoadJson()
     std::fstream f(m_path);
 
     if (!f.is_open())
-    {
         return false;
-    }
 
     m_data = json::parse(f);
     return true;
 }
 
-void Nani::Validate(const json &data, const std::vector<RequiredField> &fields,
-                  const std::string &path = "")
+void Nani::Validate(const json &data, const std::vector<RequiredField> &fields, const std::string &path = "")
 {
-    for (const auto& field : fields)
+    for (const auto &field : fields)
     {
-        std::string currentPath =
-            path.empty() ? field.name : path + "/" + field.name;
+        std::string currentPath = path.empty() ? field.name : path + "/" + field.name;
 
         if (!data.contains(field.name))
-            throw std::runtime_error(
-                std::format("Missing {}", currentPath));
+            throw std::runtime_error(std::format("Missing {}", currentPath));
 
-        const json& value = data[field.name];
+        const json &value = data[field.name];
 
         if (field.isArray)
         {
             if (!value.is_array())
-                throw std::runtime_error(
-                    std::format("{} must be an array", currentPath));
+                throw std::runtime_error(std::format("{} must be an array", currentPath));
 
             for (size_t i = 0; i < value.size(); ++i)
-            {
-                Validate(
-                    value[i],
-                    field.children,
-                    std::format("{}/[{}]", currentPath, i));
-            }
+                Validate(value[i], field.children, std::format("{}/[{}]", currentPath, i));
         }
         else if (!field.children.empty())
-        {
             Validate(value, field.children, currentPath);
-        }
     }
 }
 
@@ -92,9 +79,7 @@ void Nani::ConvertToNani()
     std::ofstream outfile(outpath);
 
     for (int i = 0; i < line_count; i++)
-    {
-        std::cout << refIds[i]["type"]["class"] << std::endl;
-        outfile << NaniCmd::Dispatch(refIds[i]["type"]["class"].get<std::string>(), ParseContext {refIds, m_textMap, i}) << std::endl;
-    }
+        outfile << NaniCmd::Dispatch(refIds[i]["type"]["class"].get<std::string>(), ParseContext{refIds, m_textMap, i}) << std::endl;
 
+    std::cout << "All done :3" << std::endl;
 }
