@@ -49,6 +49,10 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "EndIf",
+        {"endIf"},
+    },
+    {
         "ModifyTextPrinter",
         {
             "printer",
@@ -93,6 +97,14 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "ExitToTitle",
+        {"title"},
+    },
+    {
+        "ExitGame",
+        {"exitGame"},
+    },
+    {
         "FakeBackLog",
         {"fakeBackLog"},
     },
@@ -131,8 +143,65 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "CustomAddChoice",
+        {
+            "CustomChoice",
+            {
+                {ArgType::Text, "ChoiceSummary"},
+                {ArgType::Bool, "Lock", "lock"},
+                {ArgType::String, "ButtonPath", "button"},
+                {ArgType::String, "HandlerId", "handler"},
+                {ArgType::Kvp, "GotoPath", "goto"},
+                {ArgType::Kvp, "GosubPath", "gosub"},
+                {ArgType::String, "SetExpression", "set"},
+                {ArgType::StringList, "OnSelected", "do"},
+                {ArgType::Bool, "AutoPlay", "play"},
+                {ArgType::Bool, "ShowHandler", "show"},
+                {ArgType::Float, "Duration", "time"},
+            },
+        },
+    },
+    {
+        "CustomPlayMovie",
+        {
+            "customPlayMovie",
+            {
+                {ArgType::String, "MovieName"},
+                {ArgType::Float, "Duration", "time"},
+            },
+        },
+    },
+    {
+        "CustomSubtitle",
+        {
+            "customSubtitle",
+            {
+                {ArgType::String, "subtitle", "subtitle"},
+                {ArgType::Float, "inTime", "inTime"},
+                {ArgType::Float, "outTime", "outTime"},
+            },
+        },
+    },
+    {
+        "CustomPassEnd",
+        {
+            "CustomPassEnd",
+            {
+                {ArgType::String, "end", "end"},
+            },
+        },
+    },
+    {
         "CustomSave",
         {"customSave"},
+    },
+    {
+        "CustomDeleteSave",
+        {"CustomDeleteSave"},
+    },
+    {
+        "StartErase",
+        {"startErase"},
     },
     {
         "StartQTE",
@@ -145,6 +214,40 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
                 {ArgType::Float, "MissingTime", "missingTime"},
                 {ArgType::FloatList, "Interval", "interval"},
                 {ArgType::FloatList, "Scale", "scale"},
+            },
+        },
+    },
+    {
+        "StartPoint",
+        {
+            "startPoint",
+            {
+                {ArgType::String, "Text", "text"},
+                {ArgType::Int, "Count", "count"},
+                {ArgType::Float, "AddSize", "addSize"},
+            },
+        },
+    },
+    {
+        "AnimateActor",
+        {
+            "animate",
+            {
+                {ArgType::StringList, "ActorIds"},
+                {ArgType::Bool, "Loop", "loop"},
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::Bool, "Remove", "lazy"},
+                {ArgType::String, "Appearance", "appearance"},
+                {ArgType::String, "Transition", "transition"},
+                {ArgType::String, "Visibility", "visibility"},
+                {ArgType::String, "ScenePositionX", "posX"},
+                {ArgType::String, "ScenePositionY", "posY"},
+                {ArgType::String, "ScenePositionZ", "posZ"},
+                {ArgType::String, "Rotation", "rotation"},
+                {ArgType::String, "Scale", "scale"},
+                {ArgType::String, "TintColor", "tint"},
+                {ArgType::String, "EasingTypeName", "easing"},
+                {ArgType::String, "Duration", "time"}, // No, I didn't do a shoddy copy-paste job. Those really ARE all strings...
             },
         },
     },
@@ -176,6 +279,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         {
             "hideChars",
             {
+                {ArgType::String, "ConditionalExpression", "if"},
                 {ArgType::Float, "Duration", "time"},
                 {ArgType::Bool, "Remove", "lazy"},
                 {ArgType::Bool, "Wait", "wait"},
@@ -184,7 +288,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
     },
     {
         "WaitForInput",
-        {"wait i", {{ArgType::Int, ""}}},
+        {"wait i"},
     },
     {
         "ModifyCamera",
@@ -280,6 +384,17 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         },
     },
     {
+        "StopSfx",
+        {
+            "stopSfx",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "SfxPath"},
+                {ArgType::Float, "FadeOutDuration", "fade"},
+            },
+        },
+    },
+    {
         "PlayBgm",
         {
             "bgm",
@@ -305,12 +420,28 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
     },
     {
         "StopVoice",
-        {"stopVoice"},
+        {
+            "stopVoice",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+            },
+        },
     },
     {
         "Spawn",
         {
             "spawn",
+            {
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "Path"},
+                {ArgType::StringList, "Params", "params"},
+            },
+        },
+    },
+    {
+        "DestroySpawned",
+        {
+            "despawn",
             {
                 {ArgType::Bool, "Wait", "wait"},
                 {ArgType::String, "Path"},
@@ -364,6 +495,7 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
             "wait",
             {
                 {ArgType::String, "WaitMode"},
+                {ArgType::Bool, "Wait", "wait"},
             },
         },
     },
@@ -378,8 +510,7 @@ std::string NaniCmd::Dispatch(const std::string &type, const ParseContext &ctx)
     auto it = s_handler.find(type);
 
     if (it == s_handler.end())
-        // throw std::runtime_error(std::format("Unknown line type: {}", type));
-        return type + " !!TODO!!";
+        return type + " !!UNK!!";
 
     return it->second(ctx);
 }
@@ -390,16 +521,12 @@ std::string NaniCmd::ParseCmd(const ParseContext &ctx)
 
     auto it = m_cmds.find(type);
     if (it == m_cmds.end())
-        return type + " !!TODO!!";
+        return type + " !!UNK!!";
 
     const Command &cmdDef = it->second;
     std::string cmd = cmdDef.name;
-    /*
-        if (cmdDef.args.size() == 0)
-            return cmd;
-    */
-    const auto &data = ctx.refId["data"];
 
+    const auto &data = ctx.refId["data"];
     for (auto &[key, entry] : data.items())
     {
         if (!entry.contains("hasValue") || entry["hasValue"].get<int>() == 0)
@@ -512,7 +639,7 @@ std::string NaniCmd::ParseCommandScriptLine(const ParseContext &ctx)
     for (auto &ref : ctx.refId)
     {
         if (ref["rid"] == rid)
-            return std::format("{}{}", !ctx.is_inline ? "@" : "", ParseCmd(ParseContext{ref, ctx.textMap, ctx.idx, true}));
+            return std::format("{}{}", !ctx.is_inline ? "@" : "", ParseCmd(ParseContext{ref, ctx.textMap, ctx.idx}));
     }
     throw std::runtime_error("rid not found");
 }
@@ -561,18 +688,4 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
 std::string NaniCmd::ParseEmptyScriptLine(const ParseContext &ctx)
 {
     return "";
-}
-
-std::string NaniCmd::ParsePrintText(const ParseContext &ctx)
-{
-    std::string cmd = "";
-    auto &data = ctx.refId["data"];
-
-    if (data.contains("AuthorId") && data["AuthorId"].contains("hasValue") && data["AuthorId"]["hasValue"].get<int>() == 1)
-        cmd += std::format("{}: ", data["AuthorId"]["value"].get<std::string>());
-
-    std::string tkey = data["Text"]["value"]["parts"]["Array"][0]["id"].get<std::string>();
-    cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
-
-    return cmd;
 }

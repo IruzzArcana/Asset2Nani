@@ -49,7 +49,6 @@ private:
     static std::string ParseGenericTextScript(const ParseContext &ctx);
     static std::string ParseEmptyScriptLine(const ParseContext &ctx);
     static std::string ParseCommentScriptLine(const ParseContext &ctx);
-    static std::string ParsePrintText(const ParseContext &ctx);
     static std::string ParseCmd(const ParseContext &ctx);
 
     static const std::map<std::string, LineHandler> s_handler;
