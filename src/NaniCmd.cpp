@@ -334,7 +334,8 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         {
             "resetText",
             {
-                {ArgType::Int, "ResetAuthor"},
+                {ArgType::String, "PrinterId"},
+                {ArgType::Int, "ResetAuthor", "resetAuthor"},
             },
         },
     },
