@@ -1,2 +1,2 @@
 ### Asset2Nani
-WIP tool that converts unity asset back to naninovel script
+A tool that converts UABEA json dump back to Naninovel script. Mainly written for NONAND.
