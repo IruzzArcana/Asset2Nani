@@ -66,8 +66,8 @@ void Nani::ConvertToNani()
     json references = m_data["references"];
     json refIds = references["RefIds"];
 
-    int line_count = lines["Array"].size();
-    int ref_count = refIds.size();
+    size_t line_count = lines["Array"].size();
+    size_t ref_count = refIds.size();
 
     LoadTextMap();
 
