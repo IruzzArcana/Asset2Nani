@@ -606,7 +606,7 @@ std::string NaniCmd::ParseCmd(const ParseContext &ctx)
             case ArgType::Text:
             {
                 if (entry["value"]["parts"]["Array"].size() > 1)
-                    std::cout << "[WARN] Text>Value>Parts>Array returned more than one" << std::endl;
+                    std::cout << "[WARN] Text>Value>Parts>Array returned more than one in rid " << ctx.refId["rid"] << std::endl;
 
                 std::string tkey = entry["value"]["parts"]["Array"][0]["id"].get<std::string>();
                 cmd += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
@@ -672,6 +672,10 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
                     authorPrefix = std::format("{}: ", data["AuthorId"]["value"].get<std::string>());
                     authorExtracted = true;
                 }
+
+                if (data["Text"]["value"]["parts"]["Array"].size() > 1)
+                    std::cout << "[WARN] Text>Value>Parts>Array returned more than one in rid " << rid << std::endl;
+
                 std::string tkey = data["Text"]["value"]["parts"]["Array"][0]["id"].get<std::string>();
                 body += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
             }
