@@ -294,13 +294,15 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         "ModifyCamera",
         {
             "camera",
-            {{ArgType::FloatList, "Offset", "offset"},
-             {ArgType::FloatList, "Rotation", "rotation"},
-             {ArgType::Float, "Roll", "roll"},
-             {ArgType::Float, "Zoom", "zoom"},
-             {ArgType::Float, "Duration", "duration"},
-             {ArgType::Bool, "Wait", "wait"},
-             {ArgType::String, "EasingTypeName", "easing"}},
+            {
+                {ArgType::FloatList, "Offset", "offset"},
+                {ArgType::FloatList, "Rotation", "rotation"},
+                {ArgType::Float, "Roll", "roll"},
+                {ArgType::Float, "Zoom", "zoom"},
+                {ArgType::Float, "Duration", "duration"},
+                {ArgType::Bool, "Wait", "wait"},
+                {ArgType::String, "EasingTypeName", "easing"},
+            },
         },
     },
     {
@@ -318,8 +320,8 @@ const std::map<std::string, Command> NaniCmd::m_cmds = {
         {
             "print",
             {
+                {ArgType::Text, "Text"},
                 {ArgType::Bool, "Wait", "wait"},
-                {ArgType::Text, "Text", ""},
                 {ArgType::String, "AuthorId", "author"},
                 {ArgType::Float, "RevealSpeed", "speed"},
                 {ArgType::Bool, "WaitForInput", "waitInput"},
@@ -544,9 +546,7 @@ std::string NaniCmd::ParseCmd(const ParseContext &ctx)
             cmd += " ";
 
             if (!arg.cmdname.empty())
-            {
                 cmd += arg.cmdname + ":";
-            }
 
             switch (arg.type)
             {
@@ -615,9 +615,7 @@ std::string NaniCmd::ParseCmd(const ParseContext &ctx)
             break;
         }
         if (!found)
-        {
             cmd += std::format(" UNKNOWN_ARGUMENT_{} ", key);
-        }
     }
 
     return cmd;
@@ -664,10 +662,7 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
             if (ref["type"]["class"].get<std::string>() == "PrintText")
             {
                 auto &data = ref["data"];
-                if (!authorExtracted &&
-                    data.contains("AuthorId") &&
-                    data["AuthorId"].contains("hasValue") &&
-                    data["AuthorId"]["hasValue"].get<int>() == 1)
+                if (!authorExtracted && data.contains("AuthorId") && data["AuthorId"].contains("hasValue") && data["AuthorId"]["hasValue"].get<int>() == 1)
                 {
                     authorPrefix = std::format("{}: ", data["AuthorId"]["value"].get<std::string>());
                     authorExtracted = true;
@@ -680,9 +675,7 @@ std::string NaniCmd::ParseGenericTextScript(const ParseContext &ctx)
                 body += std::format("{}|#{}|", ctx.textMap.at(tkey), tkey);
             }
             else
-            {
                 body += std::format("[{}]", ParseCmd(ParseContext{ref, ctx.textMap, ctx.idx, true}));
-            }
             break;
         }
     }
