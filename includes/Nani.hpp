@@ -38,6 +38,7 @@ private:
     json m_data;
     std::filesystem::path m_path;
     std::map<std::string, std::string> m_textMap;
+    std::map<std::string, Command> m_cmds;
 
     bool LoadJson();
     void LoadTextMap();

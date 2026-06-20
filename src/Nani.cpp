@@ -41,8 +41,7 @@ void Nani::LoadTextMap()
 
 void Nani::ConvertToNani()
 {
-    std::map<std::string, Command> cmds;
-    NaniCmdDeserializer deserializer("nanicmds.json", cmds);
+    NaniCmdDeserializer deserializer("nanicmds.json", m_cmds);
     deserializer.Deserialize();
 
     json lines = m_data["lines"];
@@ -62,7 +61,7 @@ void Nani::ConvertToNani()
     std::ofstream outfile(outpath);
 
     for (int i = 0; i < line_count; i++)
-        outfile << NaniCmd::Dispatch(refIds[i]["type"]["class"].get<std::string>(), ParseContext{refIds, m_textMap, i, cmds}) << std::endl;
+        outfile << NaniCmd::Dispatch(refIds[i]["type"]["class"].get<std::string>(), ParseContext{refIds, m_textMap, i, m_cmds}) << std::endl;
 
     std::cout << "All done :3" << std::endl;
 }
