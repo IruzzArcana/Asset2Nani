@@ -1,0 +1,931 @@
+{
+  "SetControlPanelState": {
+    "name": "SetControlPanelState",
+    "args": [
+      {
+        "type": "Int",
+        "entryname": "history",
+        "cmdname": "history"
+      },
+      {
+        "type": "Int",
+        "entryname": "setting",
+        "cmdname": "setting"
+      }
+    ]
+  },
+  "SetCustomVariable": {
+    "name": "set",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "Expression"
+      }
+    ]
+  },
+  "BeginIf": {
+    "name": "if",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "Expression"
+      }
+    ]
+  },
+  "ElseIf": {
+    "name": "elseIf",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "Expression"
+      }
+    ]
+  },
+  "EndIf": {
+    "name": "endIf",
+    "args": []
+  },
+  "ModifyTextPrinter": {
+    "name": "printer",
+    "args": [
+      {
+        "type": "Kvp",
+        "entryname": "IdAndAppearance"
+      },
+      {
+        "type": "Bool",
+        "entryname": "MakeDefault",
+        "cmdname": "default"
+      },
+      {
+        "type": "Bool",
+        "entryname": "HideOther",
+        "cmdname": "hideOther"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      }
+    ]
+  },
+  "ModifyCharacter": {
+    "name": "char",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "Scale",
+        "cmdname": "scale"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      },
+      {
+        "type": "String",
+        "entryname": "TintColor",
+        "cmdname": "tint"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "ScenePosition",
+        "cmdname": "pos"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "Position",
+        "cmdname": "position"
+      },
+      {
+        "type": "String",
+        "entryname": "LookDirection",
+        "cmdname": "look"
+      },
+      {
+        "type": "String",
+        "entryname": "EasingTypeName",
+        "cmdname": "easing"
+      },
+      {
+        "type": "Kvp",
+        "entryname": "IdAndAppearance"
+      }
+    ]
+  },
+  "ModifyBackground": {
+    "name": "back",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "Scale",
+        "cmdname": "scale"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      },
+      {
+        "type": "String",
+        "entryname": "TintColor",
+        "cmdname": "tint"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "ScenePosition",
+        "cmdname": "pos"
+      },
+      {
+        "type": "String",
+        "entryname": "EasingTypeName",
+        "cmdname": "easing"
+      },
+      {
+        "type": "Kvp",
+        "entryname": "AppearanceAndTransition"
+      }
+    ]
+  },
+  "ExitToTitle": {
+    "name": "title",
+    "args": []
+  },
+  "ExitGame": {
+    "name": "exitGame",
+    "args": []
+  },
+  "FakeBackLog": {
+    "name": "fakeBackLog",
+    "args": []
+  },
+  "Achievement": {
+    "name": "Achievement",
+    "args": [
+      {
+        "type": "Int",
+        "entryname": "ID"
+      }
+    ]
+  },
+  "CustomFlashOnce": {
+    "name": "flashOnce",
+    "args": [
+      {
+        "type": "Float",
+        "entryname": "startValue",
+        "cmdname": "startValue"
+      },
+      {
+        "type": "Float",
+        "entryname": "endValue",
+        "cmdname": "endValue"
+      },
+      {
+        "type": "Float",
+        "entryname": "duration",
+        "cmdname": "duration"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "CustomExposure": {
+    "name": "customExposure",
+    "args": [
+      {
+        "type": "Float",
+        "entryname": "startValue",
+        "cmdname": "startValue"
+      },
+      {
+        "type": "Float",
+        "entryname": "endValue",
+        "cmdname": "endValue"
+      },
+      {
+        "type": "Float",
+        "entryname": "duration",
+        "cmdname": "duration"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "CustomAddChoice": {
+    "name": "CustomChoice",
+    "args": [
+      {
+        "type": "Text",
+        "entryname": "ChoiceSummary"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Lock",
+        "cmdname": "lock"
+      },
+      {
+        "type": "String",
+        "entryname": "ButtonPath",
+        "cmdname": "button"
+      },
+      {
+        "type": "String",
+        "entryname": "HandlerId",
+        "cmdname": "handler"
+      },
+      {
+        "type": "Kvp",
+        "entryname": "GotoPath",
+        "cmdname": "goto"
+      },
+      {
+        "type": "Kvp",
+        "entryname": "GosubPath",
+        "cmdname": "gosub"
+      },
+      {
+        "type": "String",
+        "entryname": "SetExpression",
+        "cmdname": "set"
+      },
+      {
+        "type": "StringList",
+        "entryname": "OnSelected",
+        "cmdname": "do"
+      },
+      {
+        "type": "Bool",
+        "entryname": "AutoPlay",
+        "cmdname": "play"
+      },
+      {
+        "type": "Bool",
+        "entryname": "ShowHandler",
+        "cmdname": "show"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      }
+    ]
+  },
+  "CustomPlayMovie": {
+    "name": "customPlayMovie",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "MovieName"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      }
+    ]
+  },
+  "CustomSubtitle": {
+    "name": "customSubtitle",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "subtitle",
+        "cmdname": "subtitle"
+      },
+      {
+        "type": "Float",
+        "entryname": "inTime",
+        "cmdname": "inTime"
+      },
+      {
+        "type": "Float",
+        "entryname": "outTime",
+        "cmdname": "outTime"
+      }
+    ]
+  },
+  "CustomPassEnd": {
+    "name": "CustomPassEnd",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "end",
+        "cmdname": "end"
+      }
+    ]
+  },
+  "CustomSave": {
+    "name": "customSave",
+    "args": []
+  },
+  "CustomDeleteSave": {
+    "name": "CustomDeleteSave",
+    "args": []
+  },
+  "StartErase": {
+    "name": "startErase",
+    "args": []
+  },
+  "StartQTE": {
+    "name": "startQTE",
+    "args": [
+      {
+        "type": "Int",
+        "entryname": "MaxCount",
+        "cmdname": "maxCount"
+      },
+      {
+        "type": "Float",
+        "entryname": "ShowTime",
+        "cmdname": "showTime"
+      },
+      {
+        "type": "Float",
+        "entryname": "RemainingTime",
+        "cmdname": "remainingTime"
+      },
+      {
+        "type": "Float",
+        "entryname": "MissingTime",
+        "cmdname": "missingTime"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "Interval",
+        "cmdname": "interval"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "Scale",
+        "cmdname": "scale"
+      }
+    ]
+  },
+  "StartPoint": {
+    "name": "startPoint",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "Text",
+        "cmdname": "text"
+      },
+      {
+        "type": "Int",
+        "entryname": "Count",
+        "cmdname": "count"
+      },
+      {
+        "type": "Float",
+        "entryname": "AddSize",
+        "cmdname": "addSize"
+      }
+    ]
+  },
+  "AnimateActor": {
+    "name": "animate",
+    "args": [
+      {
+        "type": "StringList",
+        "entryname": "ActorIds"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Loop",
+        "cmdname": "loop"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Remove",
+        "cmdname": "lazy"
+      },
+      {
+        "type": "String",
+        "entryname": "Appearance",
+        "cmdname": "appearance"
+      },
+      {
+        "type": "String",
+        "entryname": "Transition",
+        "cmdname": "transition"
+      },
+      {
+        "type": "String",
+        "entryname": "Visibility",
+        "cmdname": "visibility"
+      },
+      {
+        "type": "String",
+        "entryname": "ScenePositionX",
+        "cmdname": "posX"
+      },
+      {
+        "type": "String",
+        "entryname": "ScenePositionY",
+        "cmdname": "posY"
+      },
+      {
+        "type": "String",
+        "entryname": "ScenePositionZ",
+        "cmdname": "posZ"
+      },
+      {
+        "type": "String",
+        "entryname": "Rotation",
+        "cmdname": "rotation"
+      },
+      {
+        "type": "String",
+        "entryname": "Scale",
+        "cmdname": "scale"
+      },
+      {
+        "type": "String",
+        "entryname": "TintColor",
+        "cmdname": "tint"
+      },
+      {
+        "type": "String",
+        "entryname": "EasingTypeName",
+        "cmdname": "easing"
+      },
+      {
+        "type": "String",
+        "entryname": "Duration",
+        "cmdname": "time"
+      }
+    ]
+  },
+  "HideActors": {
+    "name": "hide",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "StringList",
+        "entryname": "ActorIds"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Remove",
+        "cmdname": "lazy"
+      }
+    ]
+  },
+  "HideAllActors": {
+    "name": "hideAll",
+    "args": [
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Remove",
+        "cmdname": "lazy"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "HideAllCharacters": {
+    "name": "hideChars",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "ConditionalExpression",
+        "cmdname": "if"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Remove",
+        "cmdname": "lazy"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "WaitForInput": {
+    "name": "wait i",
+    "args": []
+  },
+  "ModifyCamera": {
+    "name": "camera",
+    "args": [
+      {
+        "type": "FloatList",
+        "entryname": "Offset",
+        "cmdname": "offset"
+      },
+      {
+        "type": "FloatList",
+        "entryname": "Rotation",
+        "cmdname": "rotation"
+      },
+      {
+        "type": "Float",
+        "entryname": "Roll",
+        "cmdname": "roll"
+      },
+      {
+        "type": "Float",
+        "entryname": "Zoom",
+        "cmdname": "zoom"
+      },
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "duration"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "EasingTypeName",
+        "cmdname": "easing"
+      }
+    ]
+  },
+  "HidePrinter": {
+    "name": "hidePrinter",
+    "args": [
+      {
+        "type": "Float",
+        "entryname": "Duration",
+        "cmdname": "time"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "PrintText": {
+    "name": "print",
+    "args": [
+      {
+        "type": "Text",
+        "entryname": "Text"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "AuthorId",
+        "cmdname": "author"
+      },
+      {
+        "type": "Float",
+        "entryname": "RevealSpeed",
+        "cmdname": "speed"
+      },
+      {
+        "type": "Bool",
+        "entryname": "WaitForInput",
+        "cmdname": "waitInput"
+      },
+      {
+        "type": "Int",
+        "entryname": "LineBreaks",
+        "cmdname": "br"
+      },
+      {
+        "type": "Bool",
+        "entryname": "ResetPrinter",
+        "cmdname": "reset"
+      },
+      {
+        "type": "Float",
+        "entryname": "ChangeVisibilityDuration",
+        "cmdname": "fadeTime"
+      }
+    ]
+  },
+  "ResetText": {
+    "name": "resetText",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "PrinterId"
+      },
+      {
+        "type": "Int",
+        "entryname": "ResetAuthor",
+        "cmdname": "resetAuthor"
+      }
+    ]
+  },
+  "AppendLineBreak": {
+    "name": "br",
+    "args": [
+      {
+        "type": "Int",
+        "entryname": "Count"
+      }
+    ]
+  },
+  "ProcessInput": {
+    "name": "processInput",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "InputEnabled"
+      }
+    ]
+  },
+  "AddChoice": {
+    "name": "choice",
+    "args": [
+      {
+        "type": "Text",
+        "entryname": "ChoiceSummary"
+      },
+      {
+        "type": "Kvp",
+        "entryname": "GotoPath",
+        "cmdname": "goto"
+      },
+      {
+        "type": "Bool",
+        "entryname": "AutoPlay",
+        "cmdname": "play"
+      },
+      {
+        "type": "Bool",
+        "entryname": "ShowHandler",
+        "cmdname": "show"
+      },
+      {
+        "type": "String",
+        "entryname": "ConditionalExpression",
+        "cmdname": "if"
+      }
+    ]
+  },
+  "PlaySfx": {
+    "name": "sfx",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "SfxPath"
+      },
+      {
+        "type": "Float",
+        "entryname": "Volume",
+        "cmdname": "volume"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Loop",
+        "cmdname": "loop"
+      },
+      {
+        "type": "Float",
+        "entryname": "FadeInDuration",
+        "cmdname": "fade"
+      }
+    ]
+  },
+  "StopSfx": {
+    "name": "stopSfx",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "SfxPath"
+      },
+      {
+        "type": "Float",
+        "entryname": "FadeOutDuration",
+        "cmdname": "fade"
+      }
+    ]
+  },
+  "PlayBgm": {
+    "name": "bgm",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "BgmPath"
+      },
+      {
+        "type": "Float",
+        "entryname": "Volume",
+        "cmdname": "volume"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Loop",
+        "cmdname": "loop"
+      },
+      {
+        "type": "Float",
+        "entryname": "FadeInDuration",
+        "cmdname": "fade"
+      }
+    ]
+  },
+  "StopBgm": {
+    "name": "stopBgm",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "BgmPath"
+      },
+      {
+        "type": "Float",
+        "entryname": "FadeOutDuration",
+        "cmdname": "fade"
+      }
+    ]
+  },
+  "StopVoice": {
+    "name": "stopVoice",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "Spawn": {
+    "name": "spawn",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "Path"
+      },
+      {
+        "type": "StringList",
+        "entryname": "Params",
+        "cmdname": "params"
+      }
+    ]
+  },
+  "DestroySpawned": {
+    "name": "despawn",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "Path"
+      },
+      {
+        "type": "StringList",
+        "entryname": "Params",
+        "cmdname": "params"
+      }
+    ]
+  },
+  "SpawnShake": {
+    "name": "shake",
+    "args": [
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      },
+      {
+        "type": "String",
+        "entryname": "ActorId"
+      },
+      {
+        "type": "Int",
+        "entryname": "ShakeCount",
+        "cmdname": "count"
+      },
+      {
+        "type": "Float",
+        "entryname": "ShakeDuration",
+        "cmdname": "time"
+      }
+    ]
+  },
+  "Unlock": {
+    "name": "unlock",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "Id"
+      }
+    ]
+  },
+  "Goto": {
+    "name": "goto",
+    "args": [
+      {
+        "type": "Kvp",
+        "entryname": "Path"
+      },
+      {
+        "type": "String",
+        "entryname": "ConditionalExpression",
+        "cmdname": "if"
+      }
+    ]
+  },
+  "Gosub": {
+    "name": "gosub",
+    "args": [
+      {
+        "type": "Kvp",
+        "entryname": "Path"
+      }
+    ]
+  },
+  "Wait": {
+    "name": "wait",
+    "args": [
+      {
+        "type": "String",
+        "entryname": "WaitMode"
+      },
+      {
+        "type": "Bool",
+        "entryname": "Wait",
+        "cmdname": "wait"
+      }
+    ]
+  },
+  "Stop": {
+    "name": "stop",
+    "args": []
+  }
+}
