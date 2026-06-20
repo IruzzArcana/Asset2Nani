@@ -3,7 +3,7 @@
 #include <exception>
 #include <iostream>
 
-NaniCmdDeserializer::NaniCmdDeserializer(std::string path, std::map<std::string, Command> &output) : m_path(path), m_cmds(output) 
+NaniCmdDeserializer::NaniCmdDeserializer(std::filesystem::path path, std::map<std::string, Command> &output) : m_path(path), m_cmds(output) 
 {
     if (!LoadJson())
         throw std::runtime_error("CmdMap not found");

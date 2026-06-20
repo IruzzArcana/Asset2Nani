@@ -9,7 +9,7 @@
 class Nani
 {
 public:
-    Nani(std::string path);
+    Nani(std::string path, std::string cmd_path, std::string out_path);
     void ConvertToNani();
 
 private:
@@ -36,7 +36,7 @@ private:
 
     using json = nlohmann::json;
     json m_data;
-    std::filesystem::path m_path;
+    std::filesystem::path m_path, m_cmd_path, m_out_path;
     std::map<std::string, std::string> m_textMap;
     std::map<std::string, Command> m_cmds;
 

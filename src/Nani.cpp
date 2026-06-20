@@ -6,7 +6,7 @@
 #include <iostream>
 #include <format>
 
-Nani::Nani(std::string path) : m_path(path)
+Nani::Nani(std::string path, std::string cmd_path, std::string out_path) : m_path(path), m_cmd_path(cmd_path), m_out_path(out_path)
 {
     if (!LoadJson())
         throw std::runtime_error("Failed to load JSON");
@@ -41,7 +41,7 @@ void Nani::LoadTextMap()
 
 void Nani::ConvertToNani()
 {
-    NaniCmdDeserializer deserializer("nanicmds.json", m_cmds);
+    NaniCmdDeserializer deserializer(m_cmd_path, m_cmds);
     deserializer.Deserialize();
 
     json lines = m_data["lines"];
@@ -56,8 +56,7 @@ void Nani::ConvertToNani()
     if (ref_count < line_count)
         throw std::runtime_error("RefIds less than line count");
 
-    std::filesystem::path outpath = m_path.parent_path() / std::format("{}.nani", m_data["m_Name"].get<std::string>());
-
+    std::filesystem::path outpath = m_out_path.empty() ? (m_path.parent_path() / std::format("{}.nani", m_data["m_Name"].get<std::string>())) : m_out_path;
     std::ofstream outfile(outpath);
 
     for (int i = 0; i < line_count; i++)

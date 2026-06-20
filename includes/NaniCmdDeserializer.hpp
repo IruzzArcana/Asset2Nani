@@ -6,11 +6,12 @@
 #include "json.hpp"
 #include <map>
 #include <vector>
+#include <filesystem>
 
 class NaniCmdDeserializer
 {
 public:
-    NaniCmdDeserializer(std::string path, std::map<std::string, Command> &output);
+    NaniCmdDeserializer(std::filesystem::path path, std::map<std::string, Command> &output);
     void Deserialize();
 
 private:
@@ -29,7 +30,7 @@ private:
         {"name"},
         {"args", {{"type"}, {"entryname"}}, true}};
 
-    std::string m_path;
+    std::filesystem::path m_path;
     std::map<std::string, Command> &m_cmds;
     nlohmann::json m_data;
     bool LoadJson();

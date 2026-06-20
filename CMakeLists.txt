@@ -10,6 +10,8 @@ add_executable(${PROJECT_NAME}
     src/NaniCmdDeserializer.cpp
 )
 
+target_compile_definitions(${PROJECT_NAME} PRIVATE -DVERSION="v1.0.2")
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
@@ -19,6 +21,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_include_directories(${PROJECT_NAME} PRIVATE
     includes
     external/json/single_include/nlohmann
+    external/argparse/include/argparse
 )
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
