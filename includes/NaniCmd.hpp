@@ -2,38 +2,15 @@
 #include <string>
 #include "json.hpp"
 #include <fstream>
+#include "NaniCommon.hpp"
 
 struct ParseContext
 {
     const nlohmann::json &refId;
     const std::map<std::string, std::string> &textMap;
     const int &idx;
+    const std::map<std::string, Command> &cmds;
     bool is_inline = false;
-};
-
-enum ArgType
-{
-    Int,
-    Bool,
-    String,
-    StringList,
-    Float,
-    FloatList,
-    Kvp,
-    Text
-};
-
-struct CommandArg
-{
-    ArgType type;
-    std::string entryname;
-    std::string cmdname = "";
-};
-
-struct Command
-{
-    std::string name;
-    std::vector<CommandArg> args;
 };
 
 using LineHandler = std::function<std::string(const ParseContext &)>;
@@ -52,5 +29,4 @@ private:
     static std::string ParseCmd(const ParseContext &ctx);
 
     static const std::map<std::string, LineHandler> s_handler;
-    static const std::map<std::string, Command> m_cmds;
 };

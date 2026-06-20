@@ -1,5 +1,6 @@
 #include "Nani.hpp"
 #include "NaniCmd.hpp"
+#include "NaniCmdDeserializer.hpp"
 #include <fstream>
 #include <exception>
 #include <iostream>
@@ -19,31 +20,11 @@ bool Nani::LoadJson()
         return false;
 
     m_data = json::parse(f);
+
+    JSONValidator validator(m_data, m_schema);
+    validator.Validate();
+
     return true;
-}
-
-void Nani::Validate(const json &data, const std::vector<RequiredField> &fields, const std::string &path = "")
-{
-    for (const auto &field : fields)
-    {
-        std::string currentPath = path.empty() ? field.name : path + "/" + field.name;
-
-        if (!data.contains(field.name))
-            throw std::runtime_error(std::format("Missing {}", currentPath));
-
-        const json &value = data[field.name];
-
-        if (field.isArray)
-        {
-            if (!value.is_array())
-                throw std::runtime_error(std::format("{} must be an array", currentPath));
-
-            for (size_t i = 0; i < value.size(); ++i)
-                Validate(value[i], field.children, std::format("{}/[{}]", currentPath, i));
-        }
-        else if (!field.children.empty())
-            Validate(value, field.children, currentPath);
-    }
 }
 
 void Nani::LoadTextMap()
@@ -60,7 +41,9 @@ void Nani::LoadTextMap()
 
 void Nani::ConvertToNani()
 {
-    Validate(m_data, m_schema);
+    std::map<std::string, Command> cmds;
+    NaniCmdDeserializer deserializer("nanicmds.json", cmds);
+    deserializer.Deserialize();
 
     json lines = m_data["lines"];
     json references = m_data["references"];
@@ -79,7 +62,7 @@ void Nani::ConvertToNani()
     std::ofstream outfile(outpath);
 
     for (int i = 0; i < line_count; i++)
-        outfile << NaniCmd::Dispatch(refIds[i]["type"]["class"].get<std::string>(), ParseContext{refIds, m_textMap, i}) << std::endl;
+        outfile << NaniCmd::Dispatch(refIds[i]["type"]["class"].get<std::string>(), ParseContext{refIds, m_textMap, i, cmds}) << std::endl;
 
     std::cout << "All done :3" << std::endl;
 }

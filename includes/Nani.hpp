@@ -3,6 +3,8 @@
 #include <map>
 #include <vector>
 #include <filesystem>
+#include "JSONValidator.hpp"
+#include "NaniCommon.hpp"
 
 class Nani
 {
@@ -11,12 +13,6 @@ public:
     void ConvertToNani();
 
 private:
-    struct RequiredField
-    {
-        std::string name;
-        std::vector<RequiredField> children;
-        bool isArray = false;
-    };
 
     const std::vector<RequiredField> m_schema =
         {
@@ -45,6 +41,4 @@ private:
 
     bool LoadJson();
     void LoadTextMap();
-    void Validate(const json &data, const std::vector<RequiredField> &fields,
-                  const std::string &path);
 };
