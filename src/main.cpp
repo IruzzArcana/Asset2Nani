@@ -26,8 +26,16 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    Nani nani(program.get<std::string>("filename"), program.get<std::string>("--cmd"), program.get<std::string>("-o"));
-    nani.ConvertToNani();
+    try
+    {
+        Nani nani(program.get<std::string>("filename"), program.get<std::string>("--cmd"), program.get<std::string>("-o"));
+        nani.ConvertToNani();
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << e.what();
+        return 1;
+    }
 
     return 0;
 }
